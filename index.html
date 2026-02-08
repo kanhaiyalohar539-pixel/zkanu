@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ZKANU – KL Crypto Terminal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+
+<style>
+  body {
+    background: #000;
+    color: gold;
+    font-family: Arial;
+    text-align: center;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+
+  .price-box {
+    background: #111;
+    padding: 15px;
+    margin: 10px auto;
+    border-radius: 10px;
+    border: 1px solid gold;
+    width: 90%;
+    font-size: 20px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 18px;
+    border: none;
+    background: gold;
+    color: black;
+    border-radius: 8px;
+    font-weight: bold;
+  }
+
+  #tvchart {
+    height: 430px;
+    margin-top: 20px;
+  }
+</style>
+
+</head>
+<body>
+
+<h1>🔥 ZKANU – KL Crypto Terminal 🔥</h1>
+
+<div class="price-box">BTC: <span id="btc">Loading...</span></div>
+<div class="price-box">ETH: <span id="eth">Loading...</span></div>
+<div class="price-box">GOLD (XAUUSD): <span id="gold">Loading...</span></div>
+
+<button class="btn" onclick="loadChart('BTCUSDT')">BTC</button>
+<button class="btn" onclick="loadChart('ETHUSDT')">ETH</button>
+<button class="btn" onclick="loadChart('XAUUSD')">GOLD</button>
+
+<div id="tvchart"></div>
+
+<script>
+function reloadPrices() {
+  fetch(`https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT`)
+    .then(r => r.json()).then(d => btc.innerText = d.price);
+
+  fetch(`https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT`)
+    .then(r => r.json()).then(d => eth.innerText = d.price);
+
+  gold.innerText = "Requires API Key";
+}
+
+setInterval(reloadPrices, 2000);
+reloadPrices();
+
+function loadChart(symbol) {
+  new TradingView.widget({
+    container_id: "tvchart",
+    symbol: symbol,
+    interval: "15",
+    theme: "dark",
+    autosize: true
+  });
+}
+
+loadChart("BTCUSDT");
+</script>
+
+</body>
+</html>
